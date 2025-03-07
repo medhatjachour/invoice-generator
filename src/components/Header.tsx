@@ -1,7 +1,8 @@
 import { Button, Menu } from "@headlessui/react";
 import { Filter, Plus } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Invoice } from "../types";
+import { setFilter } from "../store/InvoiceSlice";
 
 interface HeaderProps {
   onNewInvoice: () => void;
@@ -13,6 +14,8 @@ const Header: React.FC<HeaderProps> = ({ onNewInvoice }) => {
   const { invoice,filter } = useSelector(
     (state: { invoices: { invoice: Invoice[],filter:string  }}) => state.invoices
   );
+  
+  const dispatch = useDispatch();
 
   return (
     <header className="flex items-center justify-between mb-8">
@@ -30,14 +33,15 @@ const Header: React.FC<HeaderProps> = ({ onNewInvoice }) => {
             <Filter size={20} className="cursor-pointer" />
             <span className="md:block hidden">filter by Status</span>
           </Menu.Button>
-          <Menu.Items className=" absolute right-0 mt-2 w-48 bg-slate-800 rounded-lg shadow-lg p-2 z-10">
+          <Menu.Items className="absolute right-0 mt-2 w-48 bg-slate-800 rounded-lg shadow-lg p-2 z-10">
             {status.map((s) => (
-              <Menu.Item key={s}>
+              <Menu.Item key={s} >
                 {({ active }) => (
                   <button
                     className={`${
-                      active ? "bg-slate-700" : ""
-                    }w-full text-left px-4 py-2 rounded-lg capitalize ${filter === s?"text-violet-500":"text-white"}`}
+                      active ? "w-full hover:bg-slate-700 cursor-pointer bg-slate-700" : ""
+                    }w-full text-left px-4 py-2 rounded-sm capitalize ${filter === s?"text-violet-500":"text-white"}`}
+                  onClick={()=>dispatch(setFilter(s))}
                   >
                     {s}
                   </button>

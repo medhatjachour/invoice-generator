@@ -35,9 +35,21 @@ const InvoiceList = () => {
     }
   };
 
+  const filteredInvoices = invoice.filter((TheInvoice) => {
+    if (filter === "all") return true;
+    return TheInvoice.status === filter;
+  });
+  if (filteredInvoices.length === 0){
+    return (
+      <div className="text-center py-12">
+        <p className="text-xl text-slate-400">No Invvoices Found</p>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-4">
-      {invoice.map((TheInvoice) => (
+      {filteredInvoices.map((TheInvoice) => (
         <div
           key={TheInvoice.id}
           className="bg-slate-800 rounded-lg p-4 flex items-center justify-between hover:bg-slate-700 transition-colors duration-300 cursor-pointer"

@@ -49,7 +49,7 @@ const loadState = ()=>{
     
   }
 }
-
+ 
 const InitialState = loadState()
 
 const invoiceSlide = createSlice({
@@ -75,12 +75,15 @@ const invoiceSlide = createSlice({
       if(!state.isFormOpen){
         state.selectedInvoice = null;
       }
+    },
+    setFilter : (state,action)=>{
+      state.filter = action.payload
     }
   }  
 })
 
 
-export const {toggleForm,addInvoice} = invoiceSlide.actions;
+export const {toggleForm,addInvoice,setFilter} = invoiceSlide.actions;
 
 export default invoiceSlide.reducer;
 
