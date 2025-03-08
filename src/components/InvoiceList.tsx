@@ -62,7 +62,7 @@ const InvoiceList = () => {
         <div
         onClick={()=>handleInvoiceClick(TheInvoice)}
           key={TheInvoice.id}
-          className="overflow-x-scroll gap-2 bg-slate-800 rounded-lg p-4 flex items-center justify-between hover:bg-slate-700 transition-colors duration-300 cursor-pointer"
+          className="custom-scrollbar overflow-x-scroll gap-2 bg-slate-800 rounded-lg p-4 flex items-center justify-between hover:bg-slate-700 transition-colors duration-300 cursor-pointer"
         >
           <div className="flex items-center space-x-6">
             <span className="text-slate-400">{TheInvoice.id}</span>
