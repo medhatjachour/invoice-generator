@@ -12,13 +12,13 @@ body{
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #1e1e1e; /* color of the track */
+    background: #1d293d; /* color of the track */
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: #888; /* color of the thumb */
     border-radius: 20px; /* roundness of the thumb */
-    border: 3px solid #1e1e1e; /* creates padding around thumb */
+    border: 3px solid #1d293d; /* creates padding around thumb */
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
@@ -28,6 +28,6 @@ body{
   /* For Firefox */
   .custom-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: #888 #1e1e1e;
+    scrollbar-color: #888 #1d293d;
   }
 
