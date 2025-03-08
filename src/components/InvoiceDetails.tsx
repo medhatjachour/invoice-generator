@@ -1,10 +1,22 @@
 import { format, parseISO } from "date-fns";
 import { FormDataInterface } from "../types";
+import { useDispatch } from "react-redux";
+import {
+  deleteInvoice,
+  markAsPaid,
+  setSelectedInvoice,
+  toggleForm,
+} from "../store/InvoiceSlice";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import InvoicePdf from "./InvoicePdf";
+import { Check, Download, Edit2, Trash2 } from "lucide-react";
 interface InvoiceDetailsProps {
   TheInvoice: FormDataInterface;
   // other props
 }
 const InvoiceDetails = ({ TheInvoice }: InvoiceDetailsProps) => {
+  const dispatch = useDispatch();
+
   const getStatusClass = (status: string) => {
     if (status === "paid") {
       return "bg-green-900/40 text-green-50";
@@ -30,11 +42,22 @@ const InvoiceDetails = ({ TheInvoice }: InvoiceDetailsProps) => {
       console.log(error);
     }
   };
+
+  const handleMarkAsPaid = () => {
+    dispatch(markAsPaid(TheInvoice.id));
+  };
+  const handleDelete = () => {
+    dispatch(deleteInvoice(TheInvoice.id));
+    dispatch(setSelectedInvoice(null));
+  };
+  const handleEdit = () => {
+    dispatch(toggleForm());
+  };
   return (
     <div className="p-8 bg-slate-800 rounded-lg">
       <div className="flex justify-between items-center mb-8">
         <div className="flex items-center space-x-4">
-          <span>Status</span>
+          <span className="md:block hidden">Status</span>
           <div
             className={`px-4 rounded-lg flex items-center space-x-2 ${getStatusClass(
               TheInvoice.status
@@ -50,14 +73,44 @@ const InvoiceDetails = ({ TheInvoice }: InvoiceDetailsProps) => {
         </div>
 
         <div className="flex space-x-4">
-          <button className="cursor-pointer px-8 py-2 rounded-full bg-slate-700 hover:bg-slate-600">
-            Edit
+          <PDFDownloadLink
+            document={<InvoicePdf TheInvoice={TheInvoice} />}
+            fileName={`invoice-${TheInvoice.id}.pdf`}
+            className="flex cursor-pointer px-6 py-3 justify-center gap-2  rounded-full bg-slate-700 hover:bg-slate-600 items-center"
+          >
+            {({loading})=>(
+              <>
+                <Download size={20}/>
+                <span className="md:block hidden">{loading?"Loading...":"Download PDF"}</span>
+              </>
+            )}
+          </PDFDownloadLink>
+          <button
+            onClick={handleEdit}
+            className="cursor-pointer md:px-8 px-3 py-2  md:rounded-full rounded-lg bg-slate-700 hover:bg-slate-600"
+          >
+            <Edit2 size={20} className="md:hidden block"/>
+            <span  className="md:block hidden"> Edit</span>
+            
           </button>
-          <button className="cursor-pointer px-8 py-2 rounded-full bg-red-500 hover:bg-red-600">
-            Delete
+          <button
+            onClick={handleDelete}
+            className="cursor-pointer md:px-8 px-3 py-2  md:rounded-full rounded-lg bg-red-500 hover:bg-red-600"
+          >
+            <Trash2 size={20} className="md:hidden block"/>
+            <span  className="md:block hidden"> Delete</span>
           </button>
-          <button className="cursor-pointer px-8 py-2 rounded-full bg-violet-500 hover:bg-violet-600">
+          <button
+            onClick={handleMarkAsPaid}
+            className="cursor-pointer md:px-8 px-3 py-2  md:rounded-full rounded-lg bg-violet-500 hover:bg-violet-600"
+          >
+            <Check size={20} className="md:hidden block"/>
+
+            <span  className="md:block hidden"> 
             Mark as Paid
+              
+            </span>
+
           </button>
         </div>
       </div>
@@ -70,7 +123,7 @@ const InvoiceDetails = ({ TheInvoice }: InvoiceDetailsProps) => {
             </h2>
             <p className="text-slate-400 ">{TheInvoice.projectDescription}</p>
           </div>
-          <div className="text-right text-slate-400">
+          <div className="text-right text-slate-400 min-w-42">
             <p>{TheInvoice.billFrom.streetAddress}</p>
             <p>{TheInvoice.billFrom.city}</p>
             <p>{TheInvoice.billFrom.postCode}</p>
@@ -95,7 +148,7 @@ const InvoiceDetails = ({ TheInvoice }: InvoiceDetailsProps) => {
           </div>
           <div>
             <p className="text-slate-400 mb-2">Sent To</p>
-            <p className="font-bold">{TheInvoice.billTo.clientEmail}</p>
+            <p className="font-bold text-wrap overflow-x-hidden">{TheInvoice.billTo.clientEmail}</p>
           </div>
         </div>
         <div className="bg-slate-800 rounded-lg overflow-hidden">
@@ -110,20 +163,27 @@ const InvoiceDetails = ({ TheInvoice }: InvoiceDetailsProps) => {
                 </tr>
               </thead>
               <tbody>
-                {TheInvoice.items.length>0&& TheInvoice.items.map((invoice,index)=>(
-                <tr className="text-white my-2" key={index}>
-                  <th className="py-1.5 text-left">{invoice.name}</th>
-                  <th className="py-1.5 text-center">{invoice.quantity}</th>
-                  <th className="py-1.5 text-right">{invoice.price.toFixed(2)}</th>
-                  <th className="py-1.5 text-right">{invoice.total.toFixed(2)}</th>
-                </tr>
-               )) }
+                {TheInvoice.items.length > 0 &&
+                  TheInvoice.items.map((invoice, index) => (
+                    <tr className="text-white my-2" key={index}>
+                      <th className="py-1.5 text-left">{invoice.name}</th>
+                      <th className="py-1.5 text-center">{invoice.quantity}</th>
+                      <th className="py-1.5 text-right">
+                        {invoice.price.toFixed(2)}
+                      </th>
+                      <th className="py-1.5 text-right">
+                        {invoice.total.toFixed(2)}
+                      </th>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
           <div className="bg-slate-900 p-8 flex justify-between items-center">
             <span className="text-white">Amount Due</span>
-            <span className="text-white text-2xl">{TheInvoice.amount.toFixed(2)}</span>
+            <span className="text-white text-2xl">
+              {TheInvoice.amount.toFixed(2)}
+            </span>
           </div>
         </div>
       </div>

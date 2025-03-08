@@ -53,12 +53,12 @@ const Header: React.FC<HeaderProps> = ({ onNewInvoice }) => {
         <Button
           onClick={onNewInvoice}
           type="button"
-          className="cursor-pointer bg-violet-500 hover:bg-violet-900 text-white px-6 py-2 rounded-full flex items-center space-x-4"
+          className="cursor-pointer bg-violet-500 hover:bg-violet-900 text-white px-2 md:px-6 py-2 rounded-full flex items-center md:space-x-4"
         >
           <div className=" bg-white rounded-full p-2">
             <Plus size={16} className="text-violet-500" />
           </div>
-          <span> New Invoice</span>
+          <span  className="md:block hidden"> New Invoice</span>
         </Button>
       </div>
     </header>

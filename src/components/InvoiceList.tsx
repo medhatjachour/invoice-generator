@@ -62,17 +62,17 @@ const InvoiceList = () => {
         <div
         onClick={()=>handleInvoiceClick(TheInvoice)}
           key={TheInvoice.id}
-          className="bg-slate-800 rounded-lg p-4 flex items-center justify-between hover:bg-slate-700 transition-colors duration-300 cursor-pointer"
+          className="overflow-x-scroll gap-2 bg-slate-800 rounded-lg p-4 flex items-center justify-between hover:bg-slate-700 transition-colors duration-300 cursor-pointer"
         >
           <div className="flex items-center space-x-6">
             <span className="text-slate-400">{TheInvoice.id}</span>
-            <span className="text-slate-400">
+            <span className="text-slate-400 min-w-32">
               Due {formData(TheInvoice.dueDate)}
             </span>
             <span className="text-slate-300">{TheInvoice.clientName}</span>
           </div>
           <div className="flex items-center space-x-6">
-            <span className="md:text-xl text-md font-bold">
+            <span className="md:text-xl text-md font-bold min-w-32">
               $ {TheInvoice.amount?.toFixed(2) || "00.00"}
             </span>
             <div

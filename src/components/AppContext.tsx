@@ -26,7 +26,7 @@ const AppContext = () => {
         )}
         {/* <InvoiceDetails/>
         <InvoiceList /> */}
-        {isFormOpen && <InvoiceForm />}
+        {isFormOpen && <InvoiceForm  TheInvoice={selectedInvoice}/>}
       </div>
     </div>
   );
