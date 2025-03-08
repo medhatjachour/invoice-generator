@@ -6,6 +6,9 @@
 
 A simple and efficient tool to generate professional invoices quickly. This project is designed for freelancers, small businesses, and anyone needing a streamlined invoicing solution. Create, customize, and export invoices with ease!
 
+## Live Preview
+Check out the live demo of the Invoice Generator here: [https://invoice-generator-flame-psi.vercel.app/](https://invoice-generator-flame-psi.vercel.app/)
+
 ## Features
 
 - **Easy Invoice Creation**: Fill in details like client info, items, and pricing to generate invoices instantly.
