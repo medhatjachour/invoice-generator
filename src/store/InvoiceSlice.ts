@@ -69,21 +69,26 @@ const invoiceSlide = createSlice({
       state.isFormOpen = false
     },
 
-    // to toggle the form
-    toggleForm :(state)=>{
+   
+    setFilter : (state,action)=>{
+      state.filter = action.payload
+    },
+     // to toggle the form
+     toggleForm :(state)=>{
       state.isFormOpen = !state.isFormOpen;
       if(!state.isFormOpen){
         state.selectedInvoice = null;
       }
     },
-    setFilter : (state,action)=>{
-      state.filter = action.payload
+    setSelectedInvoice:(state,action)=>{
+      state.selectedInvoice = action.payload
+      state.isFormOpen = false
     }
   }  
 })
 
 
-export const {toggleForm,addInvoice,setFilter} = invoiceSlide.actions;
+export const {toggleForm,addInvoice,setFilter,setSelectedInvoice} = invoiceSlide.actions;
 
 export default invoiceSlide.reducer;
 

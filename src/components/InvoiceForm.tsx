@@ -283,8 +283,7 @@ const InvoiceForm = () => {
                 <option value="Net 60 Days">Net 60 Days</option>
               </select>
             </div>
-            <input
-              type="text"
+            <textarea
               required value={formData.projectDescription}
               onChange={(e)=> setFormData({...formData,projectDescription:e.target.value})}
               

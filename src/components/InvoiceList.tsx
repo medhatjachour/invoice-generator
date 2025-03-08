@@ -1,7 +1,8 @@
 import { ChevronRight } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FormDataInterface } from "../types";
 import { format, parseISO } from "date-fns";
+import { setSelectedInvoice } from "../store/InvoiceSlice";
 
 const InvoiceList = () => {
   const { invoice, filter } = useSelector(
@@ -9,6 +10,7 @@ const InvoiceList = () => {
       state.invoices
   );
 
+  const dispatch = useDispatch();
   const formData = (date: string) => {
     try {
       return format(parseISO(date), "dd MMM yyyy");
@@ -39,6 +41,12 @@ const InvoiceList = () => {
     if (filter === "all") return true;
     return TheInvoice.status === filter;
   });
+  
+  
+ const handleInvoiceClick = (TheInvoice:FormDataInterface)=>{
+  dispatch(setSelectedInvoice(TheInvoice))
+ } 
+  
   if (filteredInvoices.length === 0){
     return (
       <div className="text-center py-12">
@@ -47,10 +55,12 @@ const InvoiceList = () => {
     )
   }
 
+
   return (
     <div className="space-y-4">
       {filteredInvoices.map((TheInvoice) => (
         <div
+        onClick={()=>handleInvoiceClick(TheInvoice)}
           key={TheInvoice.id}
           className="bg-slate-800 rounded-lg p-4 flex items-center justify-between hover:bg-slate-700 transition-colors duration-300 cursor-pointer"
         >
